@@ -6,14 +6,14 @@ function useReveal() {
   useEffect(() => {
     const els = document.querySelectorAll<HTMLElement>('.reveal');
     if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      els.forEach((el) => el.classList.add('is-in'));
+      els.forEach((el) => el.setAttribute('data-in', ''));
       return;
     }
     const io = new IntersectionObserver(
       (entries) =>
         entries.forEach((e) => {
           if (e.isIntersecting) {
-            e.target.classList.add('is-in');
+            e.target.setAttribute('data-in', '');
             io.unobserve(e.target);
           }
         }),
