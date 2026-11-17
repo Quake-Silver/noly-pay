@@ -26,7 +26,7 @@ function useReveal() {
 
 const Logo = () => (
   <a href="#top" className="logo" aria-label="Nolypay home">
-    <img src="/img/logo.png" alt="" width={36} height={36} />
+    <img src="img/logo.png" alt="" width={36} height={36} />
     <span>Nolypay</span>
   </a>
 );
@@ -35,7 +35,7 @@ const Partner = ({ glow = false }: { glow?: boolean }) => (
   <div className={`partner ${glow ? 'partner-glow' : ''}`}>
     <span>IN PARTNERSHIP WITH</span>
     <span className="partner-bank">
-      <img src="/img/providus.png" alt="" width={13} height={12} />
+      <img src="img/providus.png" alt="" width={13} height={12} />
       PROVIDUS BANK PLC
     </span>
   </div>
@@ -78,7 +78,7 @@ function Hero() {
           <p>Your rent money is for rent. Nothing else. Join Nolypay to start managing your rent payment strictly</p>
           <WaitlistButton />
         </div>
-        <img className="hero-phone" src="/img/hero-phone.png" alt="Nolypay app home screen showing ₦300,000 in total rent savings" width={937} height={663} />
+        <img className="hero-phone" src="img/hero-phone.png" alt="Nolypay app home screen showing ₦300,000 in total rent savings" width={937} height={663} />
         <div className="hero-floor" aria-hidden="true" />
         <ul className="hero-badges">
           {[
@@ -87,7 +87,7 @@ function Hero() {
             { icon: 'icon-bell', t: 'Stay Informed', d: 'Stay in-charge as your rent day ticks' },
           ].map((b) => (
             <li key={b.t} className="glass">
-              <img src={`/img/${b.icon}.png`} alt="" width={40} height={40} />
+              <img src={`img/${b.icon}.png`} alt="" width={40} height={40} />
               <div>
                 <strong>{b.t}</strong>
                 <span>{b.d}</span>
@@ -115,8 +115,8 @@ function Versus() {
           sub="Your rent money is for rent. Nothing else. Sign up to join Nolypay to start managing your rent payment strictly"
         />
         <div className="versus reveal">
-          <img src="/img/vs-without.png" alt="Without Nolypay: a stressed tenant reads a landlord's message demanding overdue rent by Friday" width={620} height={660} />
-          <img src="/img/vs-with.png" alt="With Nolypay: a relaxed tenant, ₦400,000 of ₦400,000 rent secured" width={620} height={660} />
+          <img src="img/vs-without.png" alt="Without Nolypay: a stressed tenant reads a landlord's message demanding overdue rent by Friday" width={620} height={660} />
+          <img src="img/vs-with.png" alt="With Nolypay: a relaxed tenant, ₦400,000 of ₦400,000 rent secured" width={620} height={660} />
           <span className="vs-badge" aria-hidden="true">
             VS
           </span>
@@ -130,7 +130,7 @@ function FeatureCard({ img, w, h, title, body, tone, className = '' }: { img: st
   return (
     <article className={`feature reveal tone-${tone} ${className}`}>
       <div className="feature-art">
-        <img src={`/img/${img}.png`} alt="" width={w} height={h} loading="lazy" />
+        <img src={`img/${img}.png`} alt="" width={w} height={h} loading="lazy" />
       </div>
       <div className="feature-copy">
         <h3>{title}</h3>
@@ -220,7 +220,7 @@ function Steps() {
                 <p>{s.d}</p>
               </div>
               <div className="step-art">
-                <img src={`/img/step-${i + 1}.png`} alt="" width={636} height={524} loading="lazy" />
+                <img src={`img/step-${i + 1}.png`} alt="" width={636} height={524} loading="lazy" />
               </div>
             </li>
           ))}
@@ -277,7 +277,7 @@ function Story() {
         />
         <div className="story">
           <div className="story-phone reveal">
-            <img src="/img/empty-state-phone.png" alt="Nolypay home screen with no rent plans yet" width={608} height={661} loading="lazy" />
+            <img src="img/empty-state-phone.png" alt="Nolypay home screen with no rent plans yet" width={608} height={661} loading="lazy" />
           </div>
           <div className="story-col">
             <div className="story-quote reveal">
@@ -287,7 +287,7 @@ function Story() {
               </p>
             </div>
             <div className="story-sun reveal">
-              <img src="/img/sunflower.png" alt="" width={608} height={307} loading="lazy" />
+              <img src="img/sunflower.png" alt="" width={608} height={307} loading="lazy" />
             </div>
           </div>
         </div>
@@ -327,7 +327,7 @@ function Testimonials() {
       </div>
       <div className="testimonial reveal">
         <div className="testimonial-art">
-          <img src="/img/testimonial-art.png" alt="" width={600} height={684} loading="lazy" />
+          <img src="img/testimonial-art.png" alt="" width={600} height={684} loading="lazy" />
         </div>
         <div className="testimonial-body">
           <figure key={i} className="testimonial-quote">
@@ -335,7 +335,7 @@ function Testimonials() {
             <figcaption>
               <div className="stars" aria-label={`${t.stars} out of 5 stars`}>
                 {Array.from({ length: t.stars }).map((_, k) => (
-                  <img key={k} src="/img/star.png" alt="" width={40} height={40} />
+                  <img key={k} src="img/star.png" alt="" width={40} height={40} />
                 ))}
               </div>
               <strong>{t.name}</strong>
@@ -344,10 +344,10 @@ function Testimonials() {
           </figure>
           <div className="carousel-nav">
             <button type="button" className="round-btn" onClick={() => setI(i - 1)} disabled={!canPrev} aria-label="Previous testimonial">
-              <img src="/img/arrow-right.png" alt="" width={32} height={32} className="flip" />
+              <img src="img/arrow-right.png" alt="" width={32} height={32} className="flip" />
             </button>
             <button type="button" className="round-btn" onClick={() => setI(i + 1)} disabled={!canNext} aria-label="Next testimonial">
-              <img src="/img/arrow-right.png" alt="" width={32} height={32} />
+              <img src="img/arrow-right.png" alt="" width={32} height={32} />
             </button>
           </div>
         </div>
@@ -414,7 +414,7 @@ function FinalCta() {
           <WaitlistButton variant="light" />
         </header>
         <div className="cta-photo reveal">
-          <img src="/img/cta-photo.png" alt="A tenant relaxing on his sofa while Nolypay shows ₦50,000 added to his Main apartment plan" width={1240} height={615} loading="lazy" />
+          <img src="img/cta-photo.png" alt="A tenant relaxing on his sofa while Nolypay shows ₦50,000 added to his Main apartment plan" width={1240} height={615} loading="lazy" />
         </div>
         <ul className="trust">
           {[
@@ -424,7 +424,7 @@ function FinalCta() {
           ].map((x) => (
             <li key={x.t} className="reveal">
               <strong>
-                <img src={`/img/${x.icon}.png`} alt="" width={24} height={24} />
+                <img src={`img/${x.icon}.png`} alt="" width={24} height={24} />
                 {x.t}
               </strong>
               <span>{x.d}</span>
@@ -488,7 +488,7 @@ function Footer() {
               ['github', 'GitHub'],
             ].map(([k, label]) => (
               <a key={k} href="#" aria-label={label}>
-                <img src={`/img/social-${k}.png`} alt="" width={24} height={24} />
+                <img src={`img/social-${k}.png`} alt="" width={24} height={24} />
               </a>
             ))}
           </div>

@@ -86,7 +86,7 @@ function WaitlistModal({ onClose }: { onClose: () => void }) {
           </div>
         ) : (
           <form onSubmit={submit} noValidate>
-            <img src="/img/logo.png" alt="" width={36} height={36} className="modal-logo" />
+            <img src="img/logo.png" alt="" width={36} height={36} className="modal-logo" />
             <h2 id="waitlist-title">Join the Nolypay waitlist</h2>
             <p className="modal-sub">Be first in line when we launch. No spam, just one email when it's your turn.</p>
             <label className="field">
