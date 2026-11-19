@@ -101,6 +101,8 @@ function Hero() {
 }
 
 function Versus() {
+  const [side, setSide] = useState<'without' | 'with'>('without');
+  const touchX = useRef<number | null>(null);
   return (
     <section className="section">
       <div className="container">
@@ -114,9 +116,26 @@ function Versus() {
           }
           sub="Your rent money is for rent. Nothing else. Sign up to join Nolypay to start managing your rent payment strictly"
         />
-        <div className="versus reveal">
-          <img src="img/vs-without.png" alt="Without Nolypay: a stressed tenant reads a landlord's message demanding overdue rent by Friday" width={620} height={660} />
-          <img src="img/vs-with.png" alt="With Nolypay: a relaxed tenant, ₦400,000 of ₦400,000 rent secured" width={620} height={660} />
+        <div className="vs-toggle" role="tablist" aria-label="Compare">
+          <button type="button" role="tab" aria-selected={side === 'without'} className={side === 'without' ? 'is-active' : ''} onClick={() => setSide('without')}>
+            Without NolyPay
+          </button>
+          <button type="button" role="tab" aria-selected={side === 'with'} className={side === 'with' ? 'is-active' : ''} onClick={() => setSide('with')}>
+            With NolyPay
+          </button>
+        </div>
+        <div
+          className={`versus reveal show-${side}`}
+          onTouchStart={(e) => (touchX.current = e.touches[0].clientX)}
+          onTouchEnd={(e) => {
+            if (touchX.current === null) return;
+            const dx = e.changedTouches[0].clientX - touchX.current;
+            if (Math.abs(dx) > 50) setSide(dx < 0 ? 'with' : 'without');
+            touchX.current = null;
+          }}
+        >
+          <img className="vs-without" src="img/vs-without.png" alt="Without Nolypay: a stressed tenant reads a landlord's message demanding overdue rent by Friday" width={620} height={660} />
+          <img className="vs-with" src="img/vs-with.png" alt="With Nolypay: a relaxed tenant, ₦400,000 of ₦400,000 rent secured" width={620} height={660} />
           <span className="vs-badge" aria-hidden="true">
             VS
           </span>
@@ -141,6 +160,19 @@ function FeatureCard({ img, w, h, title, body, tone, className = '' }: { img: st
 }
 
 function Features() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [slide, setSlide] = useState(0);
+  const onTrackScroll = () => {
+    const el = trackRef.current;
+    if (!el) return;
+    const cards = el.querySelectorAll<HTMLElement>('.feature');
+    const mid = el.scrollLeft + el.clientWidth / 2;
+    let best = 0;
+    cards.forEach((c, k) => {
+      if (Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid) < Math.abs(cards[best].offsetLeft + cards[best].offsetWidth / 2 - mid)) best = k;
+    });
+    setSlide(best);
+  };
   return (
     <section className="section" id="features">
       <div className="container">
@@ -159,6 +191,7 @@ function Features() {
             </>
           }
         />
+        <div className="feature-track" ref={trackRef} onScroll={onTrackScroll}>
         <div className="feature-row feature-row-2">
           <FeatureCard
             img="feat-wallet"
@@ -180,6 +213,12 @@ function Features() {
           <FeatureCard img="feat-frequency" w={400} h={348} tone="lime" title="Peace of mind, your way" body="Built to give you peace of mind, saving on your own terms" />
           <FeatureCard img="feat-calc" w={400} h={372} tone="lilac" title="Smart auto-calculate" body="Get an estimate of how much to save and how long it'll take to reach your rent target." />
           <FeatureCard img="feat-activity" w={400} h={372} tone="sky" title="Every activity tracked" body="Credits, debits, fees, all activities tracked so you always know exactly where you stand." />
+        </div>
+        </div>
+        <div className="feature-dots" aria-hidden="true">
+          {Array.from({ length: 5 }).map((_, k) => (
+            <span key={k} className={k === slide ? 'is-active' : ''} />
+          ))}
         </div>
       </div>
     </section>
@@ -515,6 +554,39 @@ function Footer() {
   );
 }
 
+function StickyCta() {
+  const { open } = useWaitlist();
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const heroBtn = document.querySelector('.hero-copy .dash-frame');
+    const blockers = [...document.querySelectorAll('.cta-wrap, .footer, .calc-result .btn')];
+    const visible = new Map<Element, boolean>();
+    const update = () => {
+      const heroGone = heroBtn ? visible.get(heroBtn) === false : true;
+      const blocked = blockers.some((b) => visible.get(b));
+      setShow(heroGone && !blocked);
+    };
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => visible.set(e.target, e.isIntersecting));
+      update();
+    });
+    if (heroBtn) io.observe(heroBtn);
+    blockers.forEach((b) => io.observe(b));
+    return () => io.disconnect();
+  }, []);
+  return (
+    <div className={`sticky-cta ${show ? 'is-shown' : ''}`} aria-hidden={!show}>
+      <span>
+        <strong>Rent-day ready, no stress.</strong>
+        Be first when we launch.
+      </span>
+      <button type="button" className="btn btn-primary" onClick={open} tabIndex={show ? 0 : -1}>
+        Join waitlist
+      </button>
+    </div>
+  );
+}
+
 function Page() {
   useReveal();
   return (
@@ -531,6 +603,7 @@ function Page() {
         <FinalCta />
       </main>
       <Footer />
+      <StickyCta />
     </>
   );
 }
