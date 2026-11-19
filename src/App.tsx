@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Calculator from './Calculator';
 import { WaitlistProvider, useWaitlist } from './waitlist';
 
@@ -291,21 +291,31 @@ function Story() {
   );
 }
 
-// Add real, attributable quotes here. The carousel arrows enable themselves once there is more than one.
+// Add real, attributable quotes here. Each one brings its own illustration; arrows loop through them.
 const TESTIMONIALS = [
   {
     quote: "For the first time ever, I don't feel like rent day is coming anymore. NolyPay helps me stay ready ahead.",
     name: 'Chioma A.',
     role: 'Business owner',
     stars: 5,
+    image: 'img/testimonial-art.png',
+  },
+  {
+    quote: 'I earn monthly, but my rent is paid annually. NolyPay makes preparation much easier.',
+    name: 'David O.',
+    role: 'Civil servant',
+    stars: 5,
+    image: 'img/testimonial-coins.png',
   },
 ];
 
 function Testimonials() {
   const [i, setI] = useState(0);
   const t = TESTIMONIALS[i];
-  const canPrev = i > 0;
-  const canNext = i < TESTIMONIALS.length - 1;
+  const n = TESTIMONIALS.length;
+  const many = n > 1;
+  const go = (d: number) => setI((x) => (x + d + n) % n);
+  const touchX = useRef<number | null>(null);
   return (
     <section className="section section-flush">
       <div className="container">
@@ -320,12 +330,24 @@ function Testimonials() {
           sub="Your rent money is for rent. Nothing else. Sign up to join Nolypay to start managing your rent payment strictly"
         />
       </div>
-      <div className="testimonial reveal">
+      <div
+        className="testimonial reveal"
+        aria-roledescription="carousel"
+        onTouchStart={(e) => (touchX.current = e.touches[0].clientX)}
+        onTouchEnd={(e) => {
+          if (touchX.current === null || !many) return;
+          const dx = e.changedTouches[0].clientX - touchX.current;
+          if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+          touchX.current = null;
+        }}
+      >
         <div className="testimonial-art">
-          <img src="img/testimonial-art.png" alt="" width={600} height={684} loading="lazy" />
+          {TESTIMONIALS.map((x, k) => (
+            <img key={x.image} src={x.image} alt="" width={600} height={684} loading="lazy" className={k === i ? 'is-current' : ''} />
+          ))}
         </div>
         <div className="testimonial-body">
-          <figure key={i} className="testimonial-quote">
+          <figure key={i} className="testimonial-quote" aria-live="polite" aria-label={`Testimonial ${i + 1} of ${n}`}>
             <blockquote>“{t.quote}”</blockquote>
             <figcaption>
               <div className="stars" aria-label={`${t.stars} out of 5 stars`}>
@@ -338,10 +360,10 @@ function Testimonials() {
             </figcaption>
           </figure>
           <div className="carousel-nav">
-            <button type="button" className="round-btn" onClick={() => setI(i - 1)} disabled={!canPrev} aria-label="Previous testimonial">
+            <button type="button" className="round-btn" onClick={() => go(-1)} disabled={!many} aria-label="Previous testimonial">
               <img src="img/arrow-right.png" alt="" width={32} height={32} className="flip" />
             </button>
-            <button type="button" className="round-btn" onClick={() => setI(i + 1)} disabled={!canNext} aria-label="Next testimonial">
+            <button type="button" className="round-btn" onClick={() => go(1)} disabled={!many} aria-label="Next testimonial">
               <img src="img/arrow-right.png" alt="" width={32} height={32} />
             </button>
           </div>
