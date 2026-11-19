@@ -263,17 +263,12 @@ function Story() {
         <SectionHead
           title={
             <>
-              Everything a rent plan
+              Why tenants
               <br />
-              should have
+              choose NolyPay
             </>
           }
-          sub={
-            <>
-              Built to make saving for rent feel effortless and spending
-              <br className="br-desk" /> it by mistake, impossible
-            </>
-          }
+          sub="Everything you need for a simplified rent journey."
         />
         <div className="story">
           <div className="story-phone reveal">
